@@ -1,0 +1,19 @@
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ski Free Game Jam Entry", "Ski Free Game Jam Entry.csproj", "{439BD0E3-6B64-4151-96EE-7833B1314416}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	ExportDebug|Any CPU = ExportDebug|Any CPU
+	ExportRelease|Any CPU = ExportRelease|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.ExportDebug|Any CPU.ActiveCfg = ExportDebug|Any CPU
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.ExportDebug|Any CPU.Build.0 = ExportDebug|Any CPU
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.ExportRelease|Any CPU.ActiveCfg = ExportRelease|Any CPU
+		{439BD0E3-6B64-4151-96EE-7833B1314416}.ExportRelease|Any CPU.Build.0 = ExportRelease|Any CPU
+	EndGlobalSection
+EndGlobal
