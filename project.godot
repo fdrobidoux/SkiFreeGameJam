@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Ski Free Game Jam Entry"
 run/main_scene="res://GameScene.tscn"
-config/features=PackedStringArray("4.2", "C#", "Forward Plus")
+config/features=PackedStringArray("4.4", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [dotnet]

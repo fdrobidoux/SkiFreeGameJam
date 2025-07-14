@@ -52,7 +52,6 @@ public partial class MainCamera : Camera2D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        toFollow.Position += new Vector2(0.0f, -0.5f);
         cameraPosLabel.Text = $"Camera Position: {this.Position.X}, {this.Position.Y}\n{this.GetScreenCenterPosition()}";
 
         if (Input.IsKeyPressed(Key.Z))

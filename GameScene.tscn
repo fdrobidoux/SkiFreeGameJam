@@ -1,89 +1,100 @@
-[gd_scene load_steps=8 format=3 uid="uid://bkjy3q72n06ki"]
+[gd_scene load_steps=11 format=3 uid="uid://bkjy3q72n06ki"]
 
-[ext_resource type="Script" path="res://GameScene.cs" id="1_rsn7o"]
-[ext_resource type="Script" path="res://MainCamera.cs" id="2_8ebx2"]
+[ext_resource type="Script" uid="uid://bmph1imfs1h3e" path="res://GameScene.cs" id="1_rsn7o"]
+[ext_resource type="Script" uid="uid://b5qw6q3oa6l1r" path="res://MainCamera.cs" id="2_8ebx2"]
+[ext_resource type="Script" uid="uid://b4ciuf6jy73qe" path="res://ThingSpawner.cs" id="3_b5kf5"]
+[ext_resource type="Script" uid="uid://benew1quy34aq" path="res://Player.cs" id="3_hvuor"]
 [ext_resource type="PackedScene" uid="uid://8cc3nnapu5cj" path="res://ThingyToSpawn.tscn" id="3_yfsak"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_f6cm2"]
-size = Vector2(1151.5, 646.5)
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_b5kf5"]
 
-[sub_resource type="Gradient" id="Gradient_xlpof"]
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b5kf5"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_xmtrl"]
-gradient = SubResource("Gradient_xlpof")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i2arf"]
+size = Vector2(56, 80)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wd5ph"]
-radius = 0.01
+[sub_resource type="SystemFont" id="SystemFont_hvuor"]
+msdf_size = 20
+
+[sub_resource type="Theme" id="Theme_i2arf"]
+/fonts/myFont = SubResource("SystemFont_hvuor")
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_rsn7o")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="UI" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 1152.0
-offset_bottom = 647.0
-
-[node name="UI_SizeLabel" type="Label" parent="CanvasLayer/UI"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 1.0
-offset_right = -975.0
-offset_bottom = -572.0
-text = "UI: "
-
-[node name="GameArea_SizeLabel" type="Label" parent="CanvasLayer/UI"]
-layout_mode = 0
-offset_top = 21.0
-offset_right = 215.0
-offset_bottom = 44.0
-text = "GameArea: "
-
-[node name="Camera_PosLabel" type="Label" parent="CanvasLayer/UI"]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 45.0
-offset_right = 70.0
-offset_bottom = 68.0
-text = "Camera: "
-
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("toFollow")]
-position = Vector2(-6.10352e-05, -1.00079)
+[node name="Camera2D" type="Camera2D" parent="."]
 anchor_mode = 0
 ignore_rotation = false
 editor_draw_limits = true
 script = ExtResource("2_8ebx2")
-uiNodePath = NodePath("../CanvasLayer/UI")
+uiNodePath = NodePath("../UI_CanvasLayer/VFlowContainer")
 gameAreaNodePath = NodePath("../GameArea")
-toFollow = NodePath("../Area2D")
-metadata/UI_Node = NodePath("../CanvasLayer/UI")
+metadata/UI_Node = NodePath("")
 metadata/GameArea_Node = NodePath("../GameArea")
 
 [node name="GameArea" type="Area2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameArea"]
-position = Vector2(575.25, 322.75)
-shape = SubResource("RectangleShape2D_f6cm2")
+shape = SubResource("WorldBoundaryShape2D_b5kf5")
 
-[node name="Area2D" type="Area2D" parent="."]
-position = Vector2(561, 507)
-scale = Vector2(0.148437, 88)
+[node name="Player" type="Area2D" parent="." node_paths=PackedStringArray("debugAngleLabel", "debugPlayerPosLabel", "line")]
+position = Vector2(561, 68)
+script = ExtResource("3_hvuor")
+debugAngleLabel = NodePath("../UI_CanvasLayer/VFlowContainer/Mouse_DegreeLabel")
+debugPlayerPosLabel = NodePath("../UI_CanvasLayer/VFlowContainer/PlayerPos_Label")
+line = NodePath("Line2D")
 
-[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Area2D"]
-position = Vector2(-3779.37, -5.77274)
-scale = Vector2(6.73685, 0.0113636)
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+scale = Vector2(55.6457, 78.9406)
+texture = SubResource("PlaceholderTexture2D_b5kf5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+shape = SubResource("RectangleShape2D_i2arf")
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Player"]
+position = Vector2(-561, -68)
 remote_path = NodePath("../../Camera2D")
 
-[node name="Car" type="Sprite2D" parent="Area2D"]
-position = Vector2(-20.209, -0.375)
-texture = SubResource("GradientTexture1D_xmtrl")
+[node name="Line2D" type="Line2D" parent="Player"]
+points = PackedVector2Array(0, 0, 0, 38)
+width = 3.0
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("CircleShape2D_wd5ph")
+[node name="ThingSpawner" type="Node2D" parent="."]
+script = ExtResource("3_b5kf5")
 
 [node name="ThingyToSpawn" parent="." instance=ExtResource("3_yfsak")]
-position = Vector2(202, -67)
+position = Vector2(207, 662)
+
+[node name="UI_CanvasLayer" type="CanvasLayer" parent="."]
+process_mode = 3
+physics_interpolation_mode = 2
+
+[node name="VFlowContainer" type="VFlowContainer" parent="UI_CanvasLayer"]
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="UI_SizeLabel" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_i2arf")
+text = "UI: "
+
+[node name="GameArea_SizeLabel" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_i2arf")
+text = "GameArea: "
+
+[node name="Camera_PosLabel" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_i2arf")
+text = "Camera: "
+
+[node name="Mouse_DegreeLabel" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_i2arf")
+
+[node name="PlayerPos_Label" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+
+[node name="MousePos_Label" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
+layout_mode = 2
+theme = SubResource("Theme_i2arf")
