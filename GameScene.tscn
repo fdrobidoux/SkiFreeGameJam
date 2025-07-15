@@ -37,11 +37,12 @@ metadata/GameArea_Node = NodePath("../GameArea")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GameArea"]
 shape = SubResource("WorldBoundaryShape2D_b5kf5")
 
-[node name="Player" type="Area2D" parent="." node_paths=PackedStringArray("debugAngleLabel", "debugPlayerPosLabel", "line")]
+[node name="Player" type="Area2D" parent="." node_paths=PackedStringArray("debugAngleLabel", "debugPlayerPosLabel", "debugMousePosLabel", "line")]
 position = Vector2(561, 68)
 script = ExtResource("3_hvuor")
 debugAngleLabel = NodePath("../UI_CanvasLayer/VFlowContainer/Mouse_DegreeLabel")
 debugPlayerPosLabel = NodePath("../UI_CanvasLayer/VFlowContainer/PlayerPos_Label")
+debugMousePosLabel = NodePath("../UI_CanvasLayer/VFlowContainer/MousePos_Label")
 line = NodePath("Line2D")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
@@ -61,9 +62,6 @@ width = 3.0
 
 [node name="ThingSpawner" type="Node2D" parent="."]
 script = ExtResource("3_b5kf5")
-
-[node name="ThingyToSpawn" parent="." instance=ExtResource("3_yfsak")]
-position = Vector2(207, 662)
 
 [node name="UI_CanvasLayer" type="CanvasLayer" parent="."]
 process_mode = 3
@@ -98,3 +96,12 @@ layout_mode = 2
 [node name="MousePos_Label" type="Label" parent="UI_CanvasLayer/VFlowContainer"]
 layout_mode = 2
 theme = SubResource("Theme_i2arf")
+
+[node name="ThingyToSpawn3" parent="." instance=ExtResource("3_yfsak")]
+position = Vector2(291, 230)
+
+[node name="ThingyToSpawn2" parent="." instance=ExtResource("3_yfsak")]
+position = Vector2(720, 415)
+
+[node name="ThingyToSpawn" parent="." instance=ExtResource("3_yfsak")]
+position = Vector2(558, 531)

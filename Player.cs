@@ -4,21 +4,29 @@ using System.Runtime.CompilerServices;
 
 public partial class Player : Area2D
 {
+    public static readonly Vector2 NEUTRAL_VECTOR = new Vector2(0.0f, 100.0f);
+    public static readonly Vector2 FIRST_ANGLE_VECTOR = new Vector2(30.0f, 70.0f);
+    public static readonly Vector2 SECOND_ANGLE_VECTOR = new Vector2(70.0f, 30.0f);
+    public static readonly Vector2 LAST_ANGLE_VECTOR = new Vector2(50.0f, 0.0f);
+
     [Export]
     public Label debugAngleLabel;
     [Export]
     public Label debugPlayerPosLabel;
     [Export]
+    public Label debugMousePosLabel;
+    [Export]
     public Line2D line;
     private Vector2 lastMousePosition = Vector2.Zero;
-
-    public Vector2 InitialPosition { get; private set; }
 
     public override void _Ready()
     {
         base._Ready();
         InitialPosition = this.Position;
     }
+
+    public Vector2 InitialPosition { get; private set; }
+    public float CurrentAngle { get; set; } = 0.0f;
 
     public override void _UnhandledInput(InputEvent @event)
     {
@@ -27,9 +35,11 @@ public partial class Player : Area2D
         if (@event is InputEventMouse @mouseEvent)
         {
             GD.Print($"Mouse Event: {mouseEvent.AsText()}");
+
             lastMousePosition = mouseEvent.Position;
-            var angle = getAngleFromMouse(mouseEvent.Position);
-            debugAngleLabel.Text = $"Angle to mouse: {Mathf.RadToDeg(angle).ToString("###")} degrees";
+            CurrentAngle = Mathf.RadToDeg(getAngleFromMouse(mouseEvent.Position));
+
+            debugAngleLabel.Text = $"Angle to mouse: {CurrentAngle.ToString("###")} degrees";
         }
     }
 
@@ -62,9 +72,31 @@ public partial class Player : Area2D
     public override void _Process(double delta)
     {
         base._Process(delta);
-        this.Position += new Vector2(0.0f, (float)(50F * delta));
+        processMovement(delta);
+        // Debug stuff
         debugPlayerPosLabel.Text = $"Player Position: {GetGlobalTransformWithCanvas().Origin} ({this.Position})";
         line.SetPointPosition(1, lastMousePosition - GetGlobalTransformWithCanvas().Origin);
+    }
+
+    private void processMovement(double delta)
+    {
+        var reverse = CurrentAngle >= 90f;
+        var normalizedAngle = CurrentAngle > 90f ? 90f - (CurrentAngle - 90f) : CurrentAngle;
+
+        var directionVector = normalizedAngle switch 
+        {
+            var angle when angle <= 0f => Vector2.Zero,
+            var angle when angle < 15f && angle >= 0f => LAST_ANGLE_VECTOR,
+            var angle when angle < 45f && angle >= 15f => SECOND_ANGLE_VECTOR,
+            var angle when angle < 75f && angle >= 45f => FIRST_ANGLE_VECTOR,
+            _ => NEUTRAL_VECTOR
+        };
+
+        if (reverse) 
+            directionVector *= new Vector2(-1, 1);
+
+        debugMousePosLabel.Text = $"Direction vector: {directionVector}";
+        this.Position += directionVector * (float)delta;
     }
 
     public override void _Draw()
