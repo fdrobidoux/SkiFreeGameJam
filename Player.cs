@@ -4,10 +4,10 @@ using System.Runtime.CompilerServices;
 
 public partial class Player : Area2D
 {
-    public static readonly Vector2 NEUTRAL_VECTOR = new Vector2(0.0f, 100.0f);
-    public static readonly Vector2 FIRST_ANGLE_VECTOR = new Vector2(30.0f, 70.0f);
-    public static readonly Vector2 SECOND_ANGLE_VECTOR = new Vector2(70.0f, 30.0f);
-    public static readonly Vector2 LAST_ANGLE_VECTOR = new Vector2(50.0f, 0.0f);
+    public static readonly Vector2 NEUTRAL_VECTOR = new Vector2(0f, 1f).Normalized();
+    public static readonly Vector2 FIRST_ANGLE_VECTOR = new Vector2(3f, 7f).Normalized();
+    public static readonly Vector2 SECOND_ANGLE_VECTOR = new Vector2(7f, 3f).Normalized();
+    public static readonly Vector2 LAST_ANGLE_VECTOR = new Vector2(1f, 0.0f).Normalized();
 
     [Export]
     public Label debugAngleLabel;
@@ -18,6 +18,9 @@ public partial class Player : Area2D
     [Export]
     public Line2D line;
     private Vector2 lastMousePosition = Vector2.Zero;
+    private Vector2 lastDirection = Vector2.Zero;
+
+    public float speed = 0.0f;
 
     public override void _Ready()
     {
@@ -39,7 +42,7 @@ public partial class Player : Area2D
             lastMousePosition = mouseEvent.Position;
             CurrentAngle = Mathf.RadToDeg(getAngleFromMouse(mouseEvent.Position));
 
-            debugAngleLabel.Text = $"Angle to mouse: {CurrentAngle.ToString("###")} degrees";
+            debugAngleLabel.Text = $"Angle to mouse: {CurrentAngle.ToString("###.##")} degrees";
         }
     }
 
@@ -92,11 +95,15 @@ public partial class Player : Area2D
             _ => NEUTRAL_VECTOR
         };
 
-        if (reverse) 
-            directionVector *= new Vector2(-1, 1);
+        if (reverse) directionVector *= new Vector2(-1, 1);
 
         debugMousePosLabel.Text = $"Direction vector: {directionVector}";
-        this.Position += directionVector * (float)delta;
+        this.Position += directionVector * (float)delta * calculateSpeed(directionVector, delta);
+    }
+
+    private float calculateSpeed(Vector2 normalizedDir, double delta)
+    {
+        normalizedDir
     }
 
     public override void _Draw()
